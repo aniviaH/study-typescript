@@ -1,0 +1,8 @@
+{
+	"compilerOptions": {
+		"outDir": "build",
+		"module": "ESNext",
+		"target": "ESNext",
+		"sourceMap": true
+	}
+}

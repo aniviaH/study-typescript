@@ -1,0 +1,44 @@
+{
+  "name": "ts-webpack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "webpack",
+    "start:react": "webpack serve --config webpack.react.js",
+    "start:react-babel": "webpack serve --config webpack.react.withbabel.js",
+    "start:vue": "webpack serve --config webpack.vue.js",
+    "start:vue-babel": "webpack serve --config webpack.vue.withbabel.js",
+    "build:react": "webpack --config ./webpack.react.js",
+    "build:react-babel": "webpack --config ./webpack.react.withbabel.js",
+    "build:vue": "webpack --config webpack.vue.js",
+    "build:vue-babel": "webpack --config webpack.vue.withbabel.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.18.9",
+    "@babel/preset-env": "^7.18.9",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.18.6",
+    "awesome-typescript-loader": "^5.2.1",
+    "babel-loader": "^8.2.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.7.4",
+    "vue": "^3.2.37",
+    "vue-loader": "^17.0.0",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "@vue/compiler-sfc": "^3.2.37",
+    "babel-preset-typescript-vue3": "^2.0.17",
+    "html-webpack-plugin": "^5.5.0",
+    "webpack-dev-server": "^4.9.3"
+  }
+}
