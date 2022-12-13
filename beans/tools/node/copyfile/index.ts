@@ -1,7 +1,15 @@
-const fs = require("fs");
-const path = require('path')
+// const fs = require("fs");
+// const path = require('path')
 
-const filesTopCopy = [
+import fs from 'fs'
+import path from 'path'
+
+interface IFileParamToCopy {
+  src: string,
+  dest: string,
+}
+
+const filesToCopy: Array<IFileParamToCopy> = [
   {
     src: "./test-a.html",
     dest: "./dest/test-a.html",
@@ -12,13 +20,23 @@ const filesTopCopy = [
   },
 ];
 
-function copyFile(src, dest) {
+filesToCopy.forEach(({ src, dest }) => {
+  copyFile(src, dest);
+});
+
+function copyFile(src: string, dest: string) {
   console.log('src---', src, path.resolve(__dirname, src))
   console.log('dest---', dest, path.resolve(__dirname, dest))
 
   const absoluteSrc = path.resolve(__dirname, src)
   const absoluteDest = path.resolve(__dirname, dest)
 
+
+  /**
+   * fs.constants.COPYFILE_EXCL: The copy operation will fail if dest already exists.
+   * fs.constants.COPYFILE_FICLONE: The copy operation will attempt to create a copy-on-write reflink. If the platform does not support copy-on-write, then a fallback copy mechanism is used.
+   * fs.constants.COPYFILE_FICLONE_FORCE: The copy operation will attempt to create a copy-on-write reflink. If the platform does not support copy-on-write, then the operation will fail.
+   */
   const mode = 0
   // const mode = fs.constants.COPYFILE_EXCL
   // const mode = fs.constants.COPYFILE_FICLONE
@@ -42,6 +60,4 @@ function copyFile(src, dest) {
   // }
 }
 
-filesTopCopy.forEach(({ src, dest }) => {
-  copyFile(src, dest);
-});
+
