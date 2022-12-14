@@ -14,53 +14,20 @@
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"TreeNode\": () => (/* binding */ TreeNode)\n/* harmony export */ });\nclass TreeNode {\r\n    left;\r\n    right;\r\n    data;\r\n    constructor(data) {\r\n        this.data = data;\r\n    }\r\n}\r\nfunction log(x) {\r\n    console.log(x);\r\n}\r\nconst node = new TreeNode(100);\r\nlog(1);\r\nlog(2);\r\nlog(3);\r\nlog(node.data);\r\n\n\n//# sourceURL=webpack://ts-webpack/./src/index.ts?");
+eval("\r\nexports.__esModule = true;\r\nexports.TreeNode = void 0;\r\nvar TreeNode = /** @class */ (function () {\r\n    function TreeNode(data) {\r\n        this.data = data;\r\n    }\r\n    return TreeNode;\r\n}());\r\nexports.TreeNode = TreeNode;\r\nfunction log(x) {\r\n    console.log(x);\r\n}\r\nvar node = new TreeNode(100);\r\nlog(node.data);\r\n\n\n//# sourceURL=webpack://ts-webpack/./src/index.ts?");
 
 /***/ })
 
 /******/ 	});
-/************************************************************************/
-/******/ 	// The require scope
-/******/ 	var __webpack_require__ = {};
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /************************************************************************/
 /******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval devtool is used.
 /******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__["./src/index.ts"](0, __webpack_exports__, __webpack_require__);
+/******/ 	__webpack_modules__["./src/index.ts"](0, __webpack_exports__);
 /******/ 	
 /******/ })()
 ;
