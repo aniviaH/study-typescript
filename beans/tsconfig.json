@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
     // "types": ["node"],
-    // "esModuleInterop": true
+    "esModuleInterop": true
   }
 }

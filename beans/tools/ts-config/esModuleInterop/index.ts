@@ -17,5 +17,9 @@
 import esDefault from './module-es'
 const esDefault2 = require('./module-es').default
 
+const common = require('./module-common')
+// import common2 from './module-common'
+
 console.log('esDefault: ', esDefault());
 console.log('esDefault2: ', esDefault2());
+console.log('common: ', common);
