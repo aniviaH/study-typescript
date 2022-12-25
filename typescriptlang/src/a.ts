@@ -1,10 +1,106 @@
-import {helloWorld} from 'baseUrl/hello/world'
+import { helloWorld } from "baseUrl/hello/world";
+import { app } from "app/index";
 
-helloWorld()
+import jsonSettings from "./../setting.json";
+
+import { TitleComponent, type TitleComponentProps } from "./TitleComponent";
+
+import {d} from './../d'
+
+export {
+  TitleComponentProps,
+  TitleComponent
+}
+
+type A = <T, U>(x: T, y: U) => [T, U];
+type B = <S>(x: S, y: S) => [S, S];
+ 
+function f(a: A, b: B) {
+  b = a; // Ok
+  // a = b; // Error
+}
+
+type Point = { x: number; y: number };
+// const p: Point = { x: 1, y: 3, m: 10 };
+
+const obj = { x: 10 };
+// console.log(obj["foo"]);
+
+function LogMethod(
+  target: any,
+  propertyKey: string | symbol,
+  descriptor: PropertyDescriptor
+) {
+  console.log(target);
+  console.log(propertyKey);
+  console.log(descriptor);
+}
+ 
+var x: {
+  propertyWithAnExceedinglyLongName1: string;
+  propertyWithAnExceedinglyLongName2: string;
+  propertyWithAnExceedinglyLongName3: string;
+  propertyWithAnExceedinglyLongName4: string;
+  propertyWithAnExceedinglyLongName5: string;
+  propertyWithAnExceedinglyLongName6: string;
+  propertyWithAnExceedinglyLongName7: string;
+  propertyWithAnExceedinglyLongName8: string;
+};
+
+// var s: string = x
+
+// class Demo {
+//   @LogMethod
+//   public foo(bar: number) {
+//     // do nothing
+//   }
+// }
+ 
+// const demo = new Demo();
+
+// import a from './../a'
+
+console.log(jsonSettings.debug === true);
+jsonSettings.debug === true;
+
+declare const enum Numbers {
+  Zero = 0,
+  One = 1,
+}
+console.log(Numbers.Zero + Numbers.One);
+
+const str = "Hello!";
+for (const s of str) {
+  console.log(s);
+}
+
+/**
+ * Days available in a week
+ * @internal
+ */
+export const daysInAWeek = 7;
+
+/** Calculate how much someone earns in a week */
+export function weeklySalary(dayRate: number) {
+  return daysInAWeek * dayRate;
+}
+
+enum Album1 {
+  JimmyEatWorldFutures = 1,
+  TubRingZooHypothesis = 2,
+  DogFashionDiscoAdultery = 3,
+}
+
+const selectedAlbum = Album1.JimmyEatWorldFutures;
+if (selectedAlbum === Album1.JimmyEatWorldFutures) {
+  console.log("That is a great choice.");
+}
+
+app();
+
+helloWorld();
 
 // export const a: number = 1
-
-
 
 function foo(param: any) {
   console.log("foo---", param);
@@ -69,7 +165,7 @@ class SharedAlbum extends Album {
     // Override to get info from many sources
   }
 
-  override setup(): void {}
+  override setup() {}
 }
 
 class Rectangle {

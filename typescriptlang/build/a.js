@@ -1,17 +1,13 @@
-export const a = 1;
-function foo(param) {
-    console.log('foo---', param);
+import { b } from './b';
+import c from './c';
+console.log('b: ', b);
+console.log('c: ', c);
+export function func(str) {
+    console.log('func', str);
 }
-function fn(n) {
-    if (n > 5) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-function verifyAge(age) {
-    if (age > 18) {
-    }
-}
+func('hello');
+const zhangsan = {
+    name: '张三',
+    tall: 181
+};
 //# sourceMappingURL=a.js.map

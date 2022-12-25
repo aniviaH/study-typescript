@@ -1,4 +1,39 @@
-import { helloWorld } from 'baseUrl/hello/world';
+import { helloWorld } from "baseUrl/hello/world";
+import { app } from "app/index";
+import jsonSettings from "./../setting.json";
+import { TitleComponent } from "./TitleComponent";
+export { TitleComponent };
+function f(a, b) {
+    b = a;
+}
+const obj = { x: 10 };
+function LogMethod(target, propertyKey, descriptor) {
+    console.log(target);
+    console.log(propertyKey);
+    console.log(descriptor);
+}
+console.log(jsonSettings.debug === true);
+jsonSettings.debug === true;
+console.log(0 + 1);
+const str = "Hello!";
+for (const s of str) {
+    console.log(s);
+}
+export const daysInAWeek = 7;
+export function weeklySalary(dayRate) {
+    return daysInAWeek * dayRate;
+}
+var Album1;
+(function (Album1) {
+    Album1[Album1["JimmyEatWorldFutures"] = 1] = "JimmyEatWorldFutures";
+    Album1[Album1["TubRingZooHypothesis"] = 2] = "TubRingZooHypothesis";
+    Album1[Album1["DogFashionDiscoAdultery"] = 3] = "DogFashionDiscoAdultery";
+})(Album1 || (Album1 = {}));
+const selectedAlbum = Album1.JimmyEatWorldFutures;
+if (selectedAlbum === Album1.JimmyEatWorldFutures) {
+    console.log("That is a great choice.");
+}
+app();
 helloWorld();
 function foo(param) {
     console.log("foo---", param);
