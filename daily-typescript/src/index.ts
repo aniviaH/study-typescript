@@ -46,14 +46,19 @@ interface Person {
   lastName: string;
 }
 
-function greeter(person: Person) {
-  const str = "Hello, " + person.firstName + " " + person
+const u: {person: Person, a: number;} = {person: {
+  firstName: 'a',
+  lastName: 'b'
+}, a: 30}
+
+function greeter({ person }: { person: Person; age: number;}) {
+  const str = "Hello, " + person.firstName + " " + person.lastName
   console.log(str);
   return str
 }
 
 let user = new Student("Jane", "M.", "User");
 
-greeter(user);
+greeter({ person: user, age: 1 });
 
-document.body.textContent = greeter(user);
+document.body.textContent = greeter({ person: user, age: 30 });
