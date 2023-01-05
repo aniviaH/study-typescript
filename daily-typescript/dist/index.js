@@ -10,8 +10,20 @@ function greeter(person: string) {
 }
 
 let user = [0, 1, 2];
-// greeter(user)
+greeter(user)
  */
+/* interface Person {
+  firstName: string;
+  lastName: string;
+}
+
+function greeter(person: Person) {
+  return "Hello, " + person.firstName + " " + person.lastName;
+}
+
+let user = { firstName: "Jane", lastName: "User" };
+
+document.body.textContent = greeter(user); */
 class Student {
     fullName;
     firstName;
@@ -22,11 +34,15 @@ class Student {
         this.fullName = firstName + " " + middleInitial + " " + lastName;
     }
 }
-function greeter(person) {
+const u = { person: {
+        firstName: 'a',
+        lastName: 'b'
+    }, a: 30 };
+function greeter({ person }) {
     const str = "Hello, " + person.firstName + " " + person.lastName;
     console.log(str);
     return str;
 }
 let user = new Student("Jane", "M.", "User");
-greeter(user);
-document.body.textContent = greeter(user);
+greeter({ person: user, age: 1 });
+document.body.textContent = greeter({ person: user, age: 30 });

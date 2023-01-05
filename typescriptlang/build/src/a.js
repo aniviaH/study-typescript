@@ -6,12 +6,14 @@ export { TitleComponent };
 function f(a, b) {
     b = a;
 }
+let helloWorldaaa = "Hello World";
 const obj = { x: 10 };
 function LogMethod(target, propertyKey, descriptor) {
     console.log(target);
     console.log(propertyKey);
     console.log(descriptor);
 }
+var x;
 console.log(jsonSettings.debug === true);
 jsonSettings.debug === true;
 console.log(0 + 1);
