@@ -46,7 +46,7 @@ interface Person {
   lastName: string;
 }
 
-const u: {person: Person, a: number;} = {person: {
+const p: {person: Person, a: number;} = {person: {
   firstName: 'a',
   lastName: 'b'
 }, a: 30}

@@ -6,7 +6,7 @@ obj.foo();
 obj();
 obj.bar = 100;
 obj = "hello";
-const n: number = obj;
+const number: number = obj;
 
 function getFavoriteNumber() {
   return 26;
