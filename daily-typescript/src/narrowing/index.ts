@@ -385,15 +385,15 @@ function getArea4(shape: Shape2) {
   }
 }
 
-// The important thing here was the encoding of Shape. 
-// Communicating the right information to TypeScript - that Circle and Square were really two separate types with specific kind fields - was crucial（至关重要的）. 
+// !!! The important thing here was the encoding of Shape. 
+// !!! Communicating the right information to TypeScript - that Circle and Square were really two separate types with specific kind fields - was crucial（至关重要的）. 
 // Doing that let us write type-safe TypeScript code that looks no different than the JavaScript we would’ve written otherwise. 
 // From there, the type system was able to do the “right” thing and figure out the types in each branch of our switch statement.
 
 // As an aside, try playing around with the above example and remove some of the return keywords. 
 // You’ll see that type-checking can help avoid bugs when accidentally falling through different clauses in a switch statement.
 
-// Discriminated unions are useful for more than just talking about circles and squares. 
+// !!! Discriminated unions are useful for more than just talking about circles and squares. 
 // They’re good for representing any sort of messaging scheme in JavaScript, 
 // like when sending messages over the network (client/server communication), or encoding mutations in a state management framework.
 
