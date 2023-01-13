@@ -267,4 +267,27 @@ interface NumberDictionary {
   // name: string; // Property 'name' of type 'string' is not assignable to 'string' index type 'number'.
 }
 
+// However, properties of different types are acceptable if the index signature is a union of the property types:
+
+interface NumberOrStringDictionary {
+  [index: string]: number | string;
+  length: number; // ok, length is a number
+  name: string; // ok, name is a string
+}
+
+// Finally, you can make index signatures readonly in order to prevent assignment to their indices:
+
+interface ReadonlyStringArray {
+  readonly [index: number]: string;
+}
+function getReadOnlyStringArray() {
+  return ['1']
+}
+let myArray2: ReadonlyStringArray = getReadOnlyStringArray();
+// myArray2[2] = "Mallory";
+// Index signature in type 'ReadonlyStringArray' only permits reading.
+
+// You can’t set myArray[2] because the index signature is readonly.
+
+/** 2. Extending Types */
 
