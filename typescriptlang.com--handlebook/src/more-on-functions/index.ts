@@ -1,4 +1,4 @@
-/** 1. Function Type Expressions */
+/** 1 Function Type Expressions */
 
 function greeter2(fn: (a: string) => void) {
   fn("Hello, World");
@@ -506,3 +506,211 @@ const user2 = {
 // The containing arrow function captures the global value of 'this'.
 // Element implicitly has an 'any' type because type 'typeof globalThis' has no index signature.
 
+
+/** 13. Other Types to Know About */
+
+// There are some additional types you’ll want to recognize that appear often when working with function types. 
+// Like all types, you can use them everywhere, but these are especially relevant in the context of functions.
+
+/** 13.1 void */
+
+// void represents the return value of functions which don’t return a value. 
+// It’s the inferred type any time a function doesn’t have any return statements, or doesn’t return any explicit value from those return statements:
+
+// The inferred return type is void
+
+function noop() {
+  return;
+}
+
+// In JavaScript, a function that doesn’t return any value will implicitly return the value undefined. 
+// However, void and undefined are not the same thing in TypeScript. There are further details at the end of this chapter.
+
+// !!! Note: void is not the same as undefined.
+
+/** 13.2 object */
+
+// The special type object refers to any value that isn’t a primitive (string, number, bigint, boolean, symbol, null, or undefined). 
+// This is different from the empty object type { }, and also different from the global type Object. 
+// !!! It’s very likely you will never use Object.
+
+// !!! Note: object is not Object. Always use object!
+
+// Note that in JavaScript, function values are objects: They have properties, have Object.prototype in their prototype chain, are instanceof Object, you can call Object.keys on them, and so on. 
+// For this reason, function types are considered to be objects in TypeScript.
+
+/** 13.3 unknown */
+
+// The unknown type represents any value. This is similar to the any type, but is safer because it’s not legal to do anything with an unknown value:
+
+function f5(a: any) {
+  a.b(); // OK
+}
+function f6(a: unknown) {
+  // a.b();
+  // Object is of type 'unknown'.
+}
+
+// This is useful when describing function types because you can describe functions that accept any value without having any values in your function body.
+
+// Conversely, you can describe a function that returns a value of unknown type:
+
+function safeParse(s: string): unknown {
+  return JSON.parse(s);
+}
+ 
+// Need to be careful with 'obj'!
+const someRandomString = 'aaa'
+const obj1 = safeParse(someRandomString);
+
+/** 13.4 never */
+
+// Some functions never return a value:
+
+function fail(msg: string): never {
+  throw new Error(msg);
+}
+
+const failRes = fail('接口异常')
+
+// The never type represents values which are never observed. 
+// In a return type, this means that the function throws an exception or terminates execution of the program.
+
+// never also appears when TypeScript determines there’s nothing left in a union.
+
+function fn8(x: string | number) {
+  if (typeof x === "string") {
+    // do something
+  } else if (typeof x === "number") {
+    // do something else
+  } else {
+    x; // has type 'never'!
+  }
+}
+
+/** 13.5 Function */
+
+function doSomething3(f: Function) {
+  return f(1, 2, 3);
+}
+
+// !!! This is an untyped function call and is generally best avoided because of the unsafe any return type.
+// !!! If you need to accept an arbitrary function but don’t intend to call it, the type () => void is generally safer.
+
+/** 14. Rest Parameters and Arguments */
+
+/** 14.1 Rest Parameters */
+
+// In addition to using optional parameters or overloads to make functions that can accept a variety of fixed argument counts, we can also define functions that take an unbounded number of arguments using rest parameters.
+
+// A rest parameter appears after all other parameters, and uses the ... syntax:
+
+function multiply(n: number, ...m: number[]) {
+  return m.map((x) => n * x);
+}
+// 'a' gets value [10, 20, 30, 40]
+const a5 = multiply(10, 1, 2, 3, 4);
+
+// In TypeScript, the type annotation on these parameters is implicitly any[] instead of any, and any type annotation given must be of the form Array<T>or T[], or a tuple type (which we’ll learn about later).
+
+/** 14.2 Rest Arguments */
+
+// Conversely, we can provide a variable number of arguments from an array using the spread syntax. 
+// For example, the push method of arrays takes any number of arguments:
+
+const arr1 = [1, 2, 3];
+const arr2 = [4, 5, 6];
+arr1.push(...arr2);
+
+// Note that in general, TypeScript does not assume that arrays are immutable. This can lead to some surprising behavior:
+
+// Inferred type is number[] -- "an array with zero or more numbers",
+// not specifically two numbers
+const args = [8, 5];
+// const args: [number, number] = [8, 5];
+// const angle = Math.atan2(...args);
+                        // A spread argument must either have a tuple type or be passed to a rest parameter.
+
+// The best fix for this situation depends a bit on your code, but in general a const context is the most straightforward solution:
+
+// Inferred as 2-length tuple
+const args2 = [8, 5] as const;
+// OK
+const angle2 = Math.atan2(...args2);
+
+// explict tuple
+const args3: [number, number] = [8, 5]
+// OK
+const angle3 = Math.atan2(...args3);
+
+// Using rest arguments may require turning on downlevelIteration when targeting older runtimes.
+
+/** 14.3 Parameter Destructuring */
+
+// You can use parameter destructuring to conveniently unpack objects provided as an argument into one or more local variables in the function body. 
+// In JavaScript, it looks like this:
+
+// The type annotation for the object goes after the destructuring syntax:
+
+function sum1({ a, b, c }: {a: number, b: number, c: number}) {
+  console.log(a + b + c);
+}
+sum1({ a: 10, b: 3, c: 9 });
+
+// This can look a bit verbose, but you can use a named type here as well:
+
+// Same as prior example
+type ABC = { a: number; b: number; c: number };
+function sum2({ a, b, c }: ABC) {
+  console.log(a + b + c);
+}
+
+/** 15. Assignability of Functions */
+
+/** 15.1 Return type void */
+
+// The void return type for functions can produce some unusual, but expected behavior.
+
+// !!! Contextual typing with a return type of void does not force functions to not return something. 
+// !!! Another way to say this is a contextual function type with a void return type (type vf = () => void), when implemented, can return any other value, but it will be ignored.
+
+// Thus, the following implementations of the type () => void are valid:
+
+type voidFunc = () => void;
+ 
+const vf1: voidFunc = () => {
+  return true;
+};
+ 
+const vf2: voidFunc = () => true;
+ 
+const vf3: voidFunc = function () {
+  return true;
+};
+
+// And when the return value of one of these functions is assigned to another variable, it will retain the type of void:
+
+let v1 = vf1();
+ 
+const v2 = vf2();
+ 
+const v3 = vf3();
+
+// This behavior exists so that the following code is valid even though Array.prototype.push returns a number and the Array.prototype.forEach method expects a function with a return type of void.
+
+const src1 = [1, 2, 3];
+const dst1 = [0];
+ 
+src1.forEach((el) => dst1.push(el));
+
+// !!! There is one other special case to be aware of, when a literal function definition has a void return type, that function must not return anything.
+
+function vf4(): void {
+  // -> @ts-expect-error
+  // return true; // Type 'boolean' is not assignable to type 'void'.
+}
+ 
+const vf5 = function (): void {
+  // -> @ts-expect-error
+  // return true; // Type 'boolean' is not assignable to type 'void'.
+};
