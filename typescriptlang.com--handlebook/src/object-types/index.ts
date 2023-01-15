@@ -5,7 +5,7 @@
 
 // As we’ve seen, they can be anonymous:
 
-function greet1(person: { name: string; age: number }) {
+function greet3(person: { name: string; age: number }) {
   return "Hello " + person.name;
 }
 
@@ -16,7 +16,7 @@ interface Person {
   age: number;
 }
  
-function greet2(person: Person) {
+function greet4(person: Person) {
   return "Hello " + person.name;
 }
 
@@ -27,7 +27,7 @@ type Person2 = {
   age: number;
 };
  
-function greet(person: Person2) {
+function greet5(person: Person2) {
   return "Hello " + person.name;
 }
 
@@ -290,4 +290,359 @@ let myArray2: ReadonlyStringArray = getReadOnlyStringArray();
 // You can’t set myArray[2] because the index signature is readonly.
 
 /** 2. Extending Types */
+
+// It’s pretty common to have types that might be more specific versions of other types. 
+// For example, we might have a BasicAddress type that describes the fields necessary for sending letters and packages in the U.S.
+
+// interface BasicAddress {
+//   name?: string;
+//   street: string;
+//   city: string;
+//   country: string;
+//   postalCode: string;
+// }
+
+// In some situations that’s enough, but addresses often have a unit number associated with them if the building at an address has multiple units. We can then describe an AddressWithUnit.
+
+// interface AddressWithUnit {
+//   name?: string;
+//   unit: string;
+//   street: string;
+//   city: string;
+//   country: string;
+//   postalCode: string;
+// }
+
+// This does the job, but the downside here is that we had to repeat all the other fields from BasicAddress when our changes were purely additive. 
+// Instead, we can extend the original BasicAddress type and just add the new fields that are unique to AddressWithUnit.
+
+interface BasicAddress {
+  name?: string;
+  street: string;
+  city: string;
+  country: string;
+  postalCode: string;
+}
+ 
+interface AddressWithUnit extends BasicAddress {
+  unit: string;
+}
+
+// The extends keyword on an interface allows us to effectively copy members from other named types, and add whatever new members we want. 
+// This can be useful for cutting down the amount of type declaration boilerplate we have to write, and for signaling intent that several different declarations of the same property might be related. 
+// For example, AddressWithUnit didn’t need to repeat the street property, and because street originates from BasicAddress, a reader will know that those two types are related in some way.
+
+// interfaces can also extend from multiple types.
+
+interface Colorful1 {
+  color: string;
+}
+ 
+interface Circle1 {
+  radius: number;
+}
+ 
+interface ColorfulCircle extends Colorful1, Circle1 {}
+ 
+const cc: ColorfulCircle = {
+  color: "red",
+  radius: 42,
+};
+
+
+/** 3. Intersection Types （交叉类型） */
+
+// interfaces allowed us to build up new types from other types by extending them. 
+// TypeScript provides another construct called intersection types that is mainly used to combine existing object types.
+
+// An intersection type is defined using the & operator.
+
+interface Colorful2 {
+  color: string;
+}
+interface Circle2 {
+  radius: number;
+}
+ 
+type ColorfulCircle2 = Colorful2 & Circle2;
+
+// Here, we’ve intersected Colorful and Circle to produce a new type that has all the members of Colorful and Circle.
+
+function draw(circle: Colorful2 & Circle2) {
+  console.log(`Color was ${circle.color}`);
+  console.log(`Radius was ${circle.radius}`);
+}
+ 
+// okay
+draw({ color: "blue", radius: 42 });
+ 
+// oops
+// draw({ color: "red", raidus: 42 });
+// Argument of type '{ color: string; raidus: number; }' is not assignable to parameter of type 'Colorful2 & Circle2'.
+  // Object literal may only specify known properties, but 'raidus' does not exist in type 'Colorful2 & Circle2'. Did you mean to write 'radius'?
+
+/** 4. Interfaces vs. Intersections */
+
+// We just looked at two ways to combine types which are similar, but are actually subtly different. 
+// With interfaces, we could use an extends clause to extend from other types, and we were able to do something similar with intersections and name the result with a type alias. 
+// The principle difference between the two is how conflicts are handled, and that difference is typically one of the main reasons why you’d pick one over the other between an interface and a type alias of an intersection type.
+
+
+/** 5. Generic Object Types */
+
+// Let’s imagine a Box type that can contain any value - strings, numbers, Giraffes, whatever.
+
+// interface Box {
+//   contents: any;
+// }
+
+// Right now, the contents property is typed as any, which works, but can lead to accidents down the line.
+
+// We could instead use unknown, but that would mean that in cases where we already know the type of contents, we’d need to do precautionary checks, or use error-prone type assertions.
+
+interface Box {
+  contents: unknown;
+}
+ 
+let box: Box = {
+  contents: "hello world",
+};
+ 
+// we could check 'x.contents'
+if (typeof box.contents === "string") {
+  console.log(box.contents.toLowerCase());
+}
+ 
+// or we could use a type assertion
+console.log((box.contents as string).toLowerCase());
+
+
+// One type safe approach would be to instead scaffold out different Box types for every type of contents.
+
+interface NumberBox {
+  contents: number;
+}
+ 
+interface StringBox {
+  contents: string;
+}
+ 
+interface BooleanBox {
+  contents: boolean;
+}
+
+// But that means we’ll have to create different functions, or overloads of functions, to operate on these types.
+
+function setContents(box: StringBox, newContents: string): void;
+function setContents(box: NumberBox, newContents: number): void;
+function setContents(box: BooleanBox, newContents: boolean): void;
+function setContents(box: { contents: any }, newContents: any) {
+  box.contents = newContents;
+}
+
+// That’s a lot of boilerplate. Moreover, we might later need to introduce new types and overloads. 
+// This is frustrating, since our box types and overloads are all effectively the same.
+
+// Instead, we can make a generic Box type which declares a type parameter.
+
+interface Box2<Type> {
+  contents: Type;
+}
+
+// You might read this as “A Box of Type is something whose contents have type Type”. 
+// Later on, when we refer to Box, we have to give a type argument in place of Type.
+
+let box2: Box2<string>;
+
+let box3: Box2<number> = {
+  contents: 1
+}
+
+// Think of Box as a template for a real type, where Type is a placeholder that will get replaced with some other type. 
+// When TypeScript sees Box<string>, it will replace every instance of Type in Box<Type> with string, and end up working with something like { contents: string }. 
+// In other words, Box<string> and our earlier StringBox work identically.
+
+interface Box4<Type> {
+  contents: Type;
+}
+interface StringBox {
+  contents: string;
+}
+ 
+let boxA: Box4<string> = { contents: "hello" };
+boxA.contents;
+    // (property) Box4<string>.contents: string
+let boxB: StringBox = { contents: "world" };
+boxB.contents;
+    // (property) StringBox.contents: string
+
+
+// Box is reusable in that Type can be substituted with anything. 
+// That means that when we need a box for a new type, we don’t need to declare a new Box type at all (though we certainly could if we wanted to).
+
+interface Box6<Type> {
+  contents: Type;
+}
+ 
+interface Apple {
+  // ....
+  color: string
+}
+ 
+// Same as '{ contents: Apple }'.
+type AppleBox = Box6<Apple>;
+const apple: Box6<Apple> = {
+  contents: {
+    color: 'green'
+  }
+}
+
+// This also means that we can avoid overloads entirely by instead using generic functions.
+
+function setContents2<Type>(box: Box6<Type>, newContents: Type) {
+  box.contents = newContents;
+}
+
+// It is worth noting that type aliases can also be generic. We could have defined our new Box<Type> interface, which was:
+
+interface Box7<Type> {
+  contents: Type;
+}
+
+// by using a type alias instead:
+
+type Box8<Type> = {
+  contents: Type
+}
+
+// Since type aliases, unlike interfaces, can describe more than just object types, we can also use them to write other kinds of generic helper types.
+
+type OrNull<Type> = Type | null;
+
+type OneOrMany<Type> = Type | Type[];
+
+type OneOrManyOrNull<Type> = OrNull<OneOrMany<Type>>;
+    // type OneOrManyOrNull<Type> = OneOrMany<Type> | null
+
+type OneOrManyOrNullStrings = OneOrManyOrNull<string>;
+    // type OneOrManyOrNullStrings = OneOrMany<string> | null
+
+/** 5.1 The Array Type */
+
+// Generic object types are often some sort of container type that work independently of the type of elements they contain. 
+// It’s ideal for data structures to work this way so that they’re re-usable across different data types.
+
+// It turns out we’ve been working with a type just like that throughout this handbook: the Array type. 
+// Whenever we write out types like number[] or string[], that’s really just a shorthand for Array<number> and Array<string>.
+
+function doSomething(value: Array<string>) {
+  // ...
+}
+ 
+let myArray3: string[] = ["hello", "world"];
+ 
+// either of these work!
+doSomething(myArray3);
+doSomething(new Array("hello", "world"));
+
+// Much like the Box type above, Array itself is a generic type.
+
+interface MyArray<Type> {
+  /**
+   * Gets or sets the length of the array.
+   */
+  length: number;
+ 
+  /**
+   * Removes the last element from an array and returns it.
+   */
+  pop(): Type | undefined;
+ 
+  /**
+   * Appends new elements to an array, and returns the new length of the array.
+   */
+  push(...items: Type[]): number;
+ 
+  // ...
+}
+
+// Modern JavaScript also provides other data structures which are generic, like Map<K, V>, Set<T>, and Promise<T>. 
+// All this really means is that because of how Map, Set, and Promise behave, they can work with any sets of types.
+
+/** 5.2 The ReadonlyArray Type */
+
+// The ReadonlyArray is a special type that describes arrays that shouldn’t be changed.
+
+function doStuff(values: ReadonlyArray<string>) {
+  // We can read from 'values'...
+  const copy = values.slice();
+  console.log(`The first value is ${values[0]}`);
+ 
+  // ...but we can't mutate 'values'.
+  // values.push("hello!");
+        // Property 'push' does not exist on type 'readonly string[]'.
+
+  // values.pop()
+        // Property 'pop' does not exist on type 'readonly string[]'.
+}
+
+// Much like the readonly modifier for properties, it’s mainly a tool we can use for intent. 
+// When we see a function that returns ReadonlyArrays, it tells us we’re not meant to change the contents at all, 
+// and when we see a function that consumes ReadonlyArrays, it tells us that we can pass any array into that function without worrying that it will change its contents.
+
+// Unlike Array, there isn’t a ReadonlyArray constructor that we can use.
+
+// new ReadonlyArray()
+    // 'ReadonlyArray' only refers to a type, but is being used as a value here.
+
+// Instead, we can assign regular Arrays to ReadonlyArrays.
+
+const roArray: ReadonlyArray<string> = ["red", "green", "blue"];
+// roArray.push('yellow') // Property 'push' does not exist on type 'readonly string[]'.
+
+// Just as TypeScript provides a shorthand syntax for Array<Type> with Type[], it also provides a shorthand syntax for ReadonlyArray<Type> with readonly Type[].
+
+const roArray2: readonly string[] = ['a', 'b', 'c']
+// roArray2.push('d') // Property 'push' does not exist on type 'readonly string[]'.
+
+function doStuff2(values: readonly string[]) {
+  // We can read from 'values'...
+  const copy = values.slice();
+  console.log(`The first value is ${values[0]}`);
+ 
+  // ...but we can't mutate 'values'.
+  // values.push("hello!");
+        // Property 'push' does not exist on type 'readonly string[]'.
+  // values.pop()
+        // Property 'push' does not exist on type 'readonly string[]'.
+}
+
+// One last thing to note is that unlike the readonly property modifier, assignability isn’t bidirectional（双向） between regular Arrays and ReadonlyArrays.
+
+let xxxx: readonly string[] = [];
+let yyyy: string[] = [];
+ 
+xxxx = yyyy;
+// yyyy = xxxx; // The type 'readonly string[]' is 'readonly' and cannot be assigned to the mutable type 'string[]'.
+
+// roArray2 = ['c'] // Cannot assign to 'roArray2' because it is a constant.
+
+let obj4:  {
+  readonly a: number
+} = {
+  a: 1
+}
+let obj5: {
+  a: number
+} = {
+  a: 1
+}
+
+obj4 = obj5
+obj5 = obj4
+
+obj4 = {a: 2}
+obj5 = {a: 3}
+
+// let obj6: readonly string[] = ['a']
 
