@@ -353,9 +353,9 @@ const cc: ColorfulCircle = {
 /** 3. Intersection Types （交叉类型） */
 
 // interfaces allowed us to build up new types from other types by extending them. 
-// TypeScript provides another construct called intersection types that is mainly used to combine existing object types.
+// !!! TypeScript provides another construct called intersection types that is mainly used to combine existing object types.
 
-// An intersection type is defined using the & operator.
+// !!! An intersection type is defined using the & operator.
 
 interface Colorful2 {
   color: string;
