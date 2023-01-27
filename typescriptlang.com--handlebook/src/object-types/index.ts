@@ -246,7 +246,7 @@ interface Okay2 {
 
 let dog: Dog = {
   name: 'wang',
-  breed: 'breed'
+  breed: 'breed',
 }
 let animal: Animal3 = {
   name: 'animal'
