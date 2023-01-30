@@ -1,4 +1,6 @@
 {
   // "http.proxyAuthorization": true,
   // "json.schemaDownload.enable": true
+  "prettier.useTabs": true,
+  "editor.tabSize": 2
 }
