@@ -202,19 +202,6 @@ namespace Album {
   export class AlbumLabel {}
 }
 
-class TestD {
-  public a: number = 1
-}
-
-interface TestD {
-  b: number
-}
-
-const t: TestD = {
-  a: 1, 
-  b: 2
-}
-
 // The visibility rules for merged members is the same as described in the Merging Namespaces section, so we must export the AlbumLabel class for the merged class to see it. 
 // The end result is a class managed inside of another class. You can also use namespaces to add more static members to an existing class.
 
