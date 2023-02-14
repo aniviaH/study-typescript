@@ -197,17 +197,17 @@ import { type TypeA, a} from "./api";
 
 // When exporting a module using export =, TypeScript-specific import module = require("module") must be used to import the module.
 
-import zip = require("./Export=");
-// Some samples to try
-let strings = ["Hello", "98052", "101"];
-// Validators to use
-let validator = new zip();
-// Show whether each string passed each validator
-strings.forEach((s) => {
-  console.log(
-    `"${s}" - ${validator.isAcceptable(s) ? "matches" : "does not match"}`
-  );
-});
+// import zip = require("./Export=");
+// // Some samples to try
+// let strings = ["Hello", "98052", "101"];
+// // Validators to use
+// let validator = new zip();
+// // Show whether each string passed each validator
+// strings.forEach((s) => {
+//   console.log(
+//     `"${s}" - ${validator.isAcceptable(s) ? "matches" : "does not match"}`
+//   );
+// });
 
 
 /** Code Generation for Modules */
@@ -329,3 +329,97 @@ strings.forEach((s) => {
 //   });
 // }
 
+
+/** Working with Other JavaScript Libraries */
+
+// To describe the shape of libraries not written in TypeScript, we need to declare the API that the library exposes.
+
+// We call declarations that don’t define an implementation “ambient”. Typically, these are defined in .d.ts files. 
+// If you’re familiar with C/C++, you can think of these as .h files. Let’s look at a few examples.
+
+/** Ambient Modules */
+
+// In Node.js, most tasks are accomplished by loading one or more modules. 
+// We could define each module in its own .d.ts file with top-level export declarations, but it’s more convenient to write them as one larger .d.ts file. 
+// To do so, we use a construct similar to ambient namespaces, but we use the module keyword and the quoted name of the module which will be available to a later import. For example:
+
+// node.d.ts (simplified excerpt)
+// declare module "url" {
+//   export interface Url {
+//     protocol?: string;
+//     hostname?: string;
+//     pathname?: string;
+//   }
+//   export function parse(
+//     urlStr: string,
+//     parseQueryString?,
+//     slashesDenoteHost?
+//   ): Url;
+// }
+// declare module "path" {
+//   export function normalize(p: string): string;
+//   export function join(...paths: any[]): string;
+//   export var sep: string;
+// }
+
+// Now we can /// <reference> node.d.ts and then load the modules using import url = require("url"); or import * as URL from "url".
+
+// /// <reference path="./AmbientModules/mynode.d.ts" />
+// import * as MYURL from 'myurl'
+// let myUrl = MYURL.parse('https://www.typescriptlang.org')
+
+
+/** Shorthand ambient modules */
+
+// If you don’t want to take the time to write out declarations before using a new module, you can use a shorthand declaration to get started quickly.
+
+// declarations.d.ts
+// declare module "hot-new-module";
+
+// All imports from a shorthand module will have the any type.
+
+// import x, { y } from "hot-new-module";
+// x(y);
+
+
+/** Wildcard module declarations */
+
+// Some module loaders such as SystemJS and AMD allow non-JavaScript content to be imported. 
+// These typically use a prefix or suffix to indicate the special loading semantics. 
+// Wildcard module declarations can be used to cover these cases.
+
+// declare module "*!text" {
+//   const content: string;
+//   export default content;
+// }
+// Some do it the other way around.
+// declare module "json!*" {
+//   const value: any;
+//   export default value;
+// }
+
+// Now you can import things that match "*!text" or "json!*".
+
+// import fileContent from "./xyz.txt!text";
+// import data from "json!http://example.com/data.json";
+// console.log(data, fileContent);
+
+
+/** UMD modules */
+
+// Some libraries are designed to be used in many module loaders, or with no module loading (global variables). 
+// These are known as UMD modules. These libraries can be accessed through either an import or a global variable. For example:
+
+// math-lib.d.ts
+// export function isPrime(x: number): boolean;
+// export as namespace mathLib;
+
+// The library can then be used as an import within modules:
+
+// import { isPrime } from "math-lib";
+// isPrime(2);
+// mathLib.isPrime(2); // ERROR: can't use the global definition from inside a module
+
+// It can also be used as a global variable, but only inside of a script. (A script is a file with no imports or exports.)
+
+// mathLib.isPrime(2);

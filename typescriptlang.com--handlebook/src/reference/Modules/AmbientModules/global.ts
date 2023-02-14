@@ -1,0 +1,1 @@
+mathLib.isPrime(2)
