@@ -133,7 +133,7 @@
 // So import { b } from "moduleB" in source file /root/src/moduleA.ts would result in the following lookups:
 
 // 1.  /root/src/node_modules/moduleB.ts
-// 2.   /root/src/node_modules/moduleB.tsx
+// 2.  /root/src/node_modules/moduleB.tsx
 // 3.  /root/src/node_modules/moduleB.d.ts
 // 4.  /root/src/node_modules/moduleB/package.json (if it specifies a types property)
 // 5.  /root/src/node_modules/@types/moduleB.d.ts
@@ -162,3 +162,233 @@
 // Don’t be intimidated by the number of steps here - TypeScript is still only jumping up directories twice at steps (9) and (17). 
 // This is really no more complex than what Node.js itself is doing.
 
+
+/** Additional module resolution flags */
+
+// A project source layout sometimes does not match that of the output. 
+// Usually a set of build steps result in generating the final output. 
+// These include compiling .ts files into .js, and copying dependencies from different source locations to a single output location. 
+// The net result is that modules at runtime may have different names than the source files containing their definitions. 
+// Or module paths in the final output may not match their corresponding source file paths at compile time.
+
+// The TypeScript compiler has a set of additional flags to inform the compiler of transformations that are expected to happen to the sources to generate the final output.
+
+// It is important to note that the compiler will not perform any of these transformations; it just uses these pieces of information to guide the process of resolving a module import to its definition file.
+
+// Base URL
+
+// Using a baseUrl is a common practice in applications using AMD module loaders where modules are “deployed” to a single folder at run-time. The sources of these modules can live in different directories, but a build script will put them all together.
+
+// Setting baseUrl informs the compiler where to find modules. All module imports with non-relative names are assumed to be relative to the baseUrl.
+
+// Value of baseUrl is determined as either:
+
+// value of baseUrl command line argument (if given path is relative, it is computed based on current directory)
+// value of baseUrl property in ‘tsconfig.json’ (if given path is relative, it is computed based on the location of ‘tsconfig.json’)
+
+// Note that relative module imports are not impacted by setting the baseUrl, as they are always resolved relative to their importing files.
+
+// You can find more documentation on baseUrl in RequireJS and SystemJS documentation.
+
+// Path mapping
+
+// Sometimes modules are not directly located under baseUrl. 
+// For instance, an import to a module "jquery" would be translated at runtime to "node_modules/jquery/dist/jquery.slim.min.js". 
+// Loaders use a mapping configuration to map module names to files at run-time, see RequireJs documentation and SystemJS documentation.
+
+// The TypeScript compiler supports the declaration of such mappings using paths property in tsconfig.json files. 
+// Here is an example for how to specify the paths property for jquery.
+
+// {
+//   "compilerOptions": {
+//     "baseUrl": ".", // This must be specified if "paths" is.
+//     "paths": {
+//       "jquery": ["node_modules/jquery/dist/jquery"] // This mapping is relative to "baseUrl"
+//     }
+//   }
+// }
+
+// Please notice that paths are resolved relative to baseUrl. When setting baseUrl to a value other than ".", i.e. the directory of tsconfig.json, the mappings must be changed accordingly. Say, you set "baseUrl": "./src" in the above example, then jquery should be mapped to "../node_modules/jquery/dist/jquery".
+
+// Using paths also allows for more sophisticated mappings including multiple fall back locations. Consider a project configuration where only some modules are available in one location, and the rest are in another. A build step would put them all together in one place. The project layout may look like:
+
+// projectRoot
+// ├── folder1
+// │   ├── file1.ts (imports 'folder1/file2' and 'folder2/file3')
+// │   └── file2.ts
+// ├── generated
+// │   ├── folder1
+// │   └── folder2
+// │       └── file3.ts
+// └── tsconfig.json
+
+// The corresponding tsconfig.json would look like:
+
+// {
+//   "compilerOptions": {
+//     "baseUrl": ".",
+//     "paths": {
+//       "*": ["*", "generated/*"]
+//     }
+//   }
+// }
+
+// This tells the compiler for any module import that matches the pattern "*" (i.e. all values), to look in two locations:
+
+// "*": meaning the same name unchanged, so map <moduleName> => <baseUrl>/<moduleName>
+// "generated/*" meaning the module name with an appended prefix “generated”, so map <moduleName> => <baseUrl>/generated/<moduleName>
+
+// Following this logic, the compiler will attempt to resolve the two imports as such:
+
+// import ‘folder1/file2’:
+
+// pattern ’*’ is matched and wildcard captures the whole module name
+// try first substitution in the list: ’*’ -> folder1/file2
+// result of substitution is non-relative name - combine it with baseUrl -> projectRoot/folder1/file2.ts.
+// File exists. Done.
+
+// import ‘folder2/file3’:
+
+// pattern ’*’ is matched and wildcard captures the whole module name
+// try first substitution in the list: ’*’ -> folder2/file3
+// result of substitution is non-relative name - combine it with baseUrl -> projectRoot/folder2/file3.ts.
+// File does not exist, move to the second substitution
+// second substitution ‘generated/*’ -> generated/folder2/file3
+// result of substitution is non-relative name - combine it with baseUrl -> projectRoot/generated/folder2/file3.ts.
+// File exists. Done.
+
+
+/** Virtual Directories with rootDirs */
+
+// Sometimes the project sources from multiple directories at compile time are all combined to generate a single output directory. This can be viewed as a set of source directories create a “virtual” directory.
+
+// Using rootDirs, you can inform the compiler of the roots making up this “virtual” directory; and thus the compiler can resolve relative modules imports within these “virtual” directories as if they were merged together in one directory.
+
+// For example consider this project structure:
+
+//  src
+//  └── views
+//      └── view1.ts (imports './template1')
+//      └── view2.ts
+
+//  generated
+//  └── templates
+//          └── views
+//              └── template1.ts (imports './view2')
+
+// Files in src/views are user code for some UI controls. Files in generated/templates are UI template binding code auto-generated by a template generator as part of the build. A build step will copy the files in /src/views and /generated/templates/views to the same directory in the output. At run-time, a view can expect its template to exist next to it, and thus should import it using a relative name as "./template".
+
+// To specify this relationship to the compiler, use rootDirs. rootDirs specify a list of roots whose contents are expected to merge at run-time. So following our example, the tsconfig.json file should look like:
+
+// {
+//   "compilerOptions": {
+//     "rootDirs": ["src/views", "generated/templates/views"]
+//   }
+// }
+
+// Every time the compiler sees a relative module import in a subfolder of one of the rootDirs, it will attempt to look for this import in each of the entries of rootDirs.
+
+// The flexibility of rootDirs is not limited to specifying a list of physical source directories that are logically merged. 
+// The supplied array may include any number of ad hoc, arbitrary directory names, regardless of whether they exist or not. 
+// This allows the compiler to capture sophisticated bundling and runtime features such as conditional inclusion and project specific loader plugins in a type safe way.
+
+// Consider an internationalization scenario where a build tool automatically generates locale specific bundles by interpolating a special path token, say #{locale}, as part of a relative module path such as ./#{locale}/messages. 
+// In this hypothetical setup the tool enumerates supported locales, mapping the abstracted path into ./zh/messages, ./de/messages, and so forth.
+
+// Assume that each of these modules exports an array of strings. For example ./zh/messages might contain:
+
+// export default ["您好吗", "很高兴认识你"];
+
+// By leveraging rootDirs we can inform the compiler of this mapping and thereby allow it to safely resolve ./#{locale}/messages, even though the directory will never exist. For example, with the following tsconfig.json:
+
+// {
+//   "compilerOptions": {
+//     "rootDirs": ["src/zh", "src/de", "src/#{locale}"]
+//   }
+// }
+
+// The compiler will now resolve import messages from './#{locale}/messages' to import messages from './zh/messages' for tooling purposes, allowing development in a locale agnostic manner without compromising design time support.
+
+
+/** Tracing module resolution */
+
+// As discussed earlier, the compiler can visit files outside the current folder when resolving a module. 
+// This can be hard when diagnosing why a module is not resolved, or is resolved to an incorrect definition. 
+// Enabling the compiler module resolution tracing using traceResolution provides insight in what happened during the module resolution process.
+
+// Let’s say we have a sample application that uses the typescript module. app.ts has an import like import * as ts from "typescript".
+
+// │   tsconfig.json
+// ├───node_modules
+// │   └───typescript
+// │       └───lib
+// │               typescript.d.ts
+// └───src
+//         app.ts
+
+// Invoking the compiler with traceResolution
+
+// tsc --traceResolution
+
+// Results in an output such as:
+
+// ======== Resolving module 'typescript' from 'src/app.ts'. ========
+// Module resolution kind is not specified, using 'NodeJs'.
+// Loading module 'typescript' from 'node_modules' folder.
+// File 'src/node_modules/typescript.ts' does not exist.
+// File 'src/node_modules/typescript.tsx' does not exist.
+// File 'src/node_modules/typescript.d.ts' does not exist.
+// File 'src/node_modules/typescript/package.json' does not exist.
+// File 'node_modules/typescript.ts' does not exist.
+// File 'node_modules/typescript.tsx' does not exist.
+// File 'node_modules/typescript.d.ts' does not exist.
+// Found 'package.json' at 'node_modules/typescript/package.json'.
+// 'package.json' has 'types' field './lib/typescript.d.ts' that references 'node_modules/typescript/lib/typescript.d.ts'.
+// File 'node_modules/typescript/lib/typescript.d.ts' exist - use it as a module resolution result.
+// ======== Module name 'typescript' was successfully resolved to 'node_modules/typescript/lib/typescript.d.ts'. ========
+// Things to look out for
+// Name and location of the import
+// ======== Resolving module ‘typescript’ from ‘src/app.ts’. ========
+
+// The strategy the compiler is following
+// -> Module resolution kind is not specified, using ‘NodeJs’.
+
+// Loading of types from npm packages
+// -> ‘package.json’ has ‘types’ field ‘./lib/typescript.d.ts’ that references ‘node_modules/typescript/lib/typescript.d.ts’.
+
+// Final result
+// -> ======== Module name ‘typescript’ was successfully resolved to ‘node_modules/typescript/lib/typescript.d.ts’. ========
+
+
+/** Using --noResolve */
+
+// Normally the compiler will attempt to resolve all module imports before it starts the compilation process. 
+// Every time it successfully resolves an import to a file, the file is added to the set of files the compiler will process later on.
+
+// The noResolve compiler options instructs the compiler not to “add” any files to the compilation that were not passed on the command line. 
+// It will still try to resolve the module to files, but if the file is not specified, it will not be included.
+
+// For instance:
+
+// app.ts
+// import * as A from "moduleA"; // OK, 'moduleA' passed on the command-line
+// import * as B from "moduleB"; // Error TS2307: Cannot find module 'moduleB'.
+
+// tsc app.ts moduleA.ts --noResolve
+
+// Compiling app.ts using noResolve should result in:
+
+// Correctly finding moduleA as it was passed on the command-line.
+// Error for not finding moduleB as it was not passed.
+
+
+/** Common Questions */
+
+// Why does a module in the exclude list still get picked up by the compiler?
+// tsconfig.json turns a folder into a “project”. Without specifying any “exclude” or “files” entries, all files in the folder containing the tsconfig.json and all its sub-directories are included in your compilation. 
+// If you want to exclude some of the files use “exclude”, if you would rather specify all the files instead of letting the compiler look them up, use “files”.
+
+// That was tsconfig.json automatic inclusion. That does not embed module resolution as discussed above. 
+// If the compiler identified a file as a target of a module import, it will be included in the compilation regardless if it was excluded in the previous steps.
+
+// So to exclude a file from the compilation, you need to exclude it and all files that have an import or /// <reference path="..." /> directive to it.
