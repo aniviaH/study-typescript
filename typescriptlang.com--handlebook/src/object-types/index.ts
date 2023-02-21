@@ -1,3 +1,5 @@
+export {}
+
 /** Object Types */
 
 // In JavaScript, the fundamental way that we group and pass around data is through objects. 
@@ -126,7 +128,7 @@ interface SomeType {
   readonly prop: string;
 }
  
-function doSomething(obj: SomeType) {
+function doSomething1(obj: SomeType) {
   // We can read from 'obj.prop'.
   console.log(`prop has the value '${obj.prop}'.`);
  
@@ -753,7 +755,7 @@ function readButtonInput2(name: string, version: number, ...input: boolean[]) {
 
 // One final note about tuple types - tuples types have readonly variants, and can be specified by sticking a readonly modifier in front of them - just like with array shorthand syntax.
 
-function doSomething(pair: readonly [string, number]) {
+function doSomething0(pair: readonly [string, number]) {
   // ...
   // pair[0] = 'b' // Cannot assign to '0' because it is a read-only property.
 }
