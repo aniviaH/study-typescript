@@ -1,3 +1,5 @@
+export {}
+
 class Base9 {
   name = "base";
   constructor() {
@@ -93,8 +95,9 @@ class MyClassChild3 extends MyClass3 {
   }
 }
 
+declare type SomeType = {}
 // TypeScript input with 'this' parameter
-function fn(this: SomeType, x: number) {
+function fn1(this: SomeType, x: number) {
   /* ... */
 }
 

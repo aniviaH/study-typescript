@@ -1,3 +1,5 @@
+export {}
+
 class Point1 {
   x: number = 0;
   y: number = 0;

@@ -1,3 +1,5 @@
+export {}
+
 // class Dog declares private fields using JavaScript's # prefix
 // JavaScript's private is hard private. It's strictly enforced.
 // TypeScript does not strip # during compilation.

@@ -1,3 +1,5 @@
+export {}
+
 /** 1 Function Type Expressions */
 
 function greeter2(fn: (a: string) => void) {
