@@ -1,0 +1,1 @@
+export type TestJSDoc = string | number 
