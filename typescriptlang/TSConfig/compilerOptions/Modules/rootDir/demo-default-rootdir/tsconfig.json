@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    // "rootDir": "core/", // The inferred value for rootDir is the longest common path of all non-declaration input files, which in this case is core/
+    
+    "rootDir": "./",
+    
+    "outDir": "dist"
+  }
+}

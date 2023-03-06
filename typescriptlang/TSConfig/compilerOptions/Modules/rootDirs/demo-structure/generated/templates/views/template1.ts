@@ -1,0 +1,1 @@
+export const template1 = 'template1'

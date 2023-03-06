@@ -1,0 +1,64 @@
+{
+  "compilerOptions": {
+    // "module": "CommonJS",
+    // "outDir": "./dist-commonjs"
+
+    // "module": "UMD",
+    // "outDir": "./dist-umd"
+
+    // "module": "AMD",
+    // "outDir": "./dist-amd"
+
+    // "module": "System",
+    // "outDir": "./dist-system"
+
+    // "module": "ES2015",
+    // "outDir": "./dist-es2015"
+
+    // "module": "ES2020",
+    // "outDir": "./dist-es2020"
+
+    // "module": "ES2022",
+    // "outDir": "./dist-es2022"
+
+    // "module": "ESNext",
+    // "outDir": "./dist-esnext"
+
+    // "module": "Node16",
+    // "outDir": "./dist-node16--0",
+
+    // "module": "NodeNext",
+    // "outDir": "./dist-nodenext--0",
+
+
+    // "module": "Node16",
+    // "outDir": "dist-node16--type-module",
+    // "moduleResolution": "node16"
+
+    // "module": "NodeNext",
+    // "outDir": "dist-nodenext--type-module",
+    // "moduleResolution": "nodenext"
+
+    // "module": "Node16",
+    // "outDir": "dist-node16--type-commonjs",
+    // "moduleResolution": "node16"
+
+    // "module": "NodeNext",
+    // "outDir": "dist-nodenext--type-commonjs",
+    // "moduleResolution": "nodenext"
+
+    // "module": "ESNext",
+    // "outDir": "./dist-esnext--type-commonjs"
+
+    // "module": "ESNext",
+    // "outDir": "./dist-esnext--type-module"
+
+    // "module": "ESNext",
+    // "outDir": "./dist-esnext--type-module-1",
+    // "moduleResolution": "node"
+
+    "module": "ESNext",
+    "outDir": "./dist-esnext--type-commonjs-1",
+    "moduleResolution": "node",
+  }
+}

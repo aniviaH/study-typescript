@@ -1,0 +1,1 @@
+export const valueOfPi = 3.1415926

@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    // "rootDir": "./", // he inferred value for rootDir is the longest common path of all non-declaration input files, which in this case is ./
+    
+    /*
+      Note that TypeScript will never write an output file to a directory outside of outDir, and will never skip emitting a file. For this reason, rootDir also enforces that all files which need to be emitted are underneath the rootDir path.
+      It would be an error to specify rootDir as core and include as * because it creates a file (helpers.ts) that would need to be emitted outside the outDir (i.e. ../helpers.js).
+    */
+    "rootDir": "core",
+    // File 'e:/010-TypeScript/study-typescript/typescriptlang/TSConfig/compilerOptions/Modules/rootDir/demo-not-satisfy/helper.ts' is not under 'rootDir' 'e:/010-TypeScript/study-typescript/typescriptlang/TSConfig/compilerOptions/Modules/rootDir/demo-not-satisfy/core'. 'rootDir' is expected to contain all source files.
+    //   The file is in the program because:
+    //     Matched by default include pattern '**/*'
+    
+    "outDir": "dist"
+  }
+}

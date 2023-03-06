@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "rootDirs": ["src/views", "generated/templates/views"],
+    "outDir": "dist"
+  }
+}

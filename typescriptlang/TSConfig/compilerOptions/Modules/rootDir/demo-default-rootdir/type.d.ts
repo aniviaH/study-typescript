@@ -1,0 +1,1 @@
+declare function type1 (): void

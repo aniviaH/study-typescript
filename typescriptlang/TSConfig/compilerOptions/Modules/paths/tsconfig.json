@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "myJquery": ["libs/myJquery.ts"], // this mapping is relative to "baseUrl"
+      // This would allow you to be able to write import "jquery", and get all of the correct typing locally.
+      "components/*": ["components/*"],
+      "configs/*": ["configs/*"],
+      "helpers/*": ["helpers/*"]
+    }
+  }
+}

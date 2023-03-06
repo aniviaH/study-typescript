@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "typeRoots": ["./typeRoots/"],
+    "types": ["node", "express", "jQuery"], // For all visible ”@types” packages: If types is specified, only packages listed will be included in the global scope.
+  }
+}
