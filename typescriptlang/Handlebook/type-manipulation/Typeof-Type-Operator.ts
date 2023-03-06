@@ -1,3 +1,5 @@
+export {}
+
 /** 1. The typeof type operator */
 
 // JavaScript already has a typeof operator you can use in an expression context:

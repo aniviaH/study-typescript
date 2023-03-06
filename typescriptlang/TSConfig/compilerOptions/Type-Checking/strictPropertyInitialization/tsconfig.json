@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "strictNullChecks": true,
+    // Option 'strictPropertyInitialization' cannot be specified without specifying option 'strictNullChecks'.
+    "strictPropertyInitialization": true
+  }
+}

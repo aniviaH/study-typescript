@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "strictNullChecks": true,
+    // Option 'exactOptionalPropertyTypes' cannot be specified without specifying option 'strictNullChecks'.
+    "exactOptionalPropertyTypes": true 
+  }
+}
