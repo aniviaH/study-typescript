@@ -1,0 +1,16 @@
+{
+  "name": "editorsupport",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "styled-components": "^5.3.8",
+    "typescript": "^4.9.5",
+    "typescript-styled-plugin": "^0.18.2"
+  }
+}
