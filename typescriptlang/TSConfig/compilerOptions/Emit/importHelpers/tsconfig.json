@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "downlevelIteration": true,
+    // "importHelpers": true,
+    
+    "noEmitHelpers": true,
+
+    "module": "ESNext",
+  }
+}

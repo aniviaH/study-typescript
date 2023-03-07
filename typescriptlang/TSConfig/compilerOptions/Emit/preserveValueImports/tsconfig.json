@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "outDir": "dist",
+    "target": "ESNext",
+
+    "isolatedModules": true,
+    "preserveValueImports": true
+  }
+}
