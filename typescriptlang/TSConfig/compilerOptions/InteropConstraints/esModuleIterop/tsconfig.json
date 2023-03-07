@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": false,
+    "outDir": "dist",
+
+    "importHelpers": true
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": false,
+    "allowJs": true,
+    "outDir": "dist"
+  }
+}

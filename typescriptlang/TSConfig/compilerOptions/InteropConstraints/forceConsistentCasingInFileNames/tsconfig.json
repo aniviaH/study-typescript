@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    
+  },
+  // "include": ["./src/**/*"]
+  // include 默认值: "**/*"
+  // "include": ["**/*"]
+}
