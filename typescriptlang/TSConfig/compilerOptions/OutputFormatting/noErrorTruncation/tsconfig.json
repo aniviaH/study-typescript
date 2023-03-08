@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "noErrorTruncation": true,
+
+    // "preserveWatchOutput": true,
+
+    "pretty": true // default: true -- Stylize errors and messages using color and context, this is on by default — offers you a chance to have less terse, single colored messages from the compiler.
+  }
+}
