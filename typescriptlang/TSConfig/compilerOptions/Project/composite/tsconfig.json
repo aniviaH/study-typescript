@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    // "composite": true,
+    // "tsBuildInfoFile": "tsbuildinfo/tsconfig.tsbuildinfo",
+
+    "incremental": true,
+
+    "outDir": "dist",
+
+    "disableReferencedProjectLoad": true,
+    "disableSolutionSearching": true,
+    "disableSourceOfProjectReferenceRedirect": true
+  },
+  // "include": ["src/**/*"],
+  // "files": ["src/index.ts"]
+}
