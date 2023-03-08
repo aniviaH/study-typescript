@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "jsxFactory": "h",
+
+    // "module": "ESNext",
+    // "target": "ESNext"
+  }
+}

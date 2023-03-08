@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "allowSyntheticDefaultImports": true,
+
+    // "jsx": "react",
+    // "outDir": "dist-jsx--react"
+
+    // "jsx": "preserve",
+    // "outDir": "dist-jsx--preserve"
+
+    // "jsx": "react-native",
+    // "outDir": "dist-jsx--react-native"
+
+    // "jsx": "react-jsx",
+    // "outDir": "dist-jsx--react-jsx"
+
+    "jsx": "react-jsxdev",
+    "outDir": "dist-jsx--react-jsxdev"
+  }
+}
