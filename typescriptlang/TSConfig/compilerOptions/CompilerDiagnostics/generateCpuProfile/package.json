@@ -1,0 +1,6 @@
+{
+  "name": "cpu",
+  "scripts": {
+    "generatecpuprofile": "tsc --generateCpuProfile tsc-output.cpuprofile"
+  }
+}

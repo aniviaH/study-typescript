@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    // "diagnostics": true,
+    "extendedDiagnostics": true,
+    "outDir": "dist"
+  }
+}

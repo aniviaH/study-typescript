@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "listEmittedFiles": true,
+    "listFiles": true,
+  }
+}
