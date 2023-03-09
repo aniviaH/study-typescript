@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "outDir": "dist",
+    "module": "ES2022",
+    "target": "ES2022",
+    "moduleResolution": "node",
+
+    "assumeChangesOnlyAffectDirectDependencies": false
+  },
+  "watchOptions": {
+    "excludeFiles": ["src/index.ts"],
+    "excludeDirectories": ["src"],
+    "watchFile": "fixedPollingInterval"
+  }
+}
