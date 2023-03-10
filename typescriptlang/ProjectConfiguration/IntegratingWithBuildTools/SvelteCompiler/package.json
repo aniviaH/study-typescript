@@ -1,0 +1,10 @@
+{
+  "name": "svelte-compiler",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "module": "module",
+  "devDependencies": {
+    "svelte-preprocess": "^5.0.1"
+  }
+}

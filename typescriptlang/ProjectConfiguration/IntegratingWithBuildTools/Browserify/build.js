@@ -1,0 +1,10 @@
+var browserify = require('browserify')
+var tsify = require('tsify')
+var source = require('vinyl-source-stream')
+var path = require('path')
+
+browserify()
+  .add('src/index.ts')
+  .plugin("tsify", { noImplicitAny: true })
+  .bundle()
+  .pipe(process.stdout)

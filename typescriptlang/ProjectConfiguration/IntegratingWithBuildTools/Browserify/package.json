@@ -1,0 +1,14 @@
+{
+  "name": "browserify",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^17.0.0",
+    "tsify": "^5.0.4",
+    "vinyl-source-stream": "^2.0.0"
+  },
+  "scripts": {
+    "build": "browserify src/index.ts -p [ tsify --noImplicitAny ] > bundle.js"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "babel",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.0",
+    "@babel/preset-typescript": "^7.21.0"
+  },
+  "scripts": {
+    "build": "babel --out-file bundle.js src/**"
+  }
+}
