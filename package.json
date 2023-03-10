@@ -1,0 +1,12 @@
+{
+  "name": "study-typescript",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/aniviaH/study-typescript.git",
+  "author": "1058039938@qq.com <aniviah@163.com>",
+  "license": "MIT",
+  "dependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  }
+}
